@@ -24,6 +24,10 @@ const TodoApp = () => {
     updateTodos(updatedTodos)
   }
 
+  const addTodo = label => {
+    updateTodos([...todos, { label, completed: false }])
+  }
+
   return (
     <div>
       <TodosList
@@ -32,6 +36,7 @@ const TodoApp = () => {
         deleteTodo={deleteTodo}
       />
       <Stats todos={todos} />
+      <AddTodo addTodo={addTodo} />
     </div>
   )
 }
@@ -63,6 +68,37 @@ const Stats = ({ todos }) => {
       Completed: <strong>{todos.filter(t => t.completed).length}</strong>{' '}
       Pending: <strong>{todos.filter(t => !t.completed).length}</strong>
     </aside>
+  )
+}
+
+const AddTodo = ({ addTodo }) => {
+  const [isFormVisible, setFormVisibility] = React.useState(true)
+  const [label, setLabel] = React.useState('')
+  return (
+    <form
+      onSubmit={e => {
+        e.preventDefault()
+        addTodo(label)
+        setLabel('')
+        setFormVisibility(false)
+      }}
+    >
+      {!isFormVisible ? (
+        <button type="button" onClick={() => setFormVisibility(!isFormVisible)}>
+          Add
+        </button>
+      ) : (
+        <>
+          <input
+            placeholder="New Todo"
+            autoFocus={true}
+            onChange={e => setLabel(e.target.value)}
+            value={label}
+          />
+          <button type="submit">Confirm</button>
+        </>
+      )}
+    </form>
   )
 }
 
