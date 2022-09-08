@@ -36,7 +36,7 @@ const TodoApp = () => {
         deleteTodo={deleteTodo}
       />
       <Stats todos={todos} />
-      <AddTodo addTodo={addTodo} />
+      <AddTodo addTodo={addTodo} todos={todos} />
     </div>
   )
 }
@@ -71,9 +71,23 @@ const Stats = ({ todos }) => {
   )
 }
 
-const AddTodo = ({ addTodo }) => {
-  const [isFormVisible, setFormVisibility] = React.useState(true)
+const AddTodo = ({ addTodo, todos }) => {
+  const [isFormVisible, setFormVisibility] = React.useState(false)
   const [label, setLabel] = React.useState('')
+  const [error, setError] = React.useState(null)
+  const [dirty, setDirty] = React.useState(false)
+
+  React.useEffect(() => {
+    if (label === '' && dirty) {
+      setError('A todo must have a name!')
+    } else if (todos.find(t => t.label === label)) {
+      setError('Todo with this name already exists!')
+    } else {
+      setError(null)
+    }
+    setDirty(true)
+  }, [label])
+
   return (
     <form
       onSubmit={e => {
@@ -95,6 +109,9 @@ const AddTodo = ({ addTodo }) => {
             onChange={e => setLabel(e.target.value)}
             value={label}
           />
+
+          {error && <aside role="alert">{error}</aside>}
+
           <button type="submit">Confirm</button>
         </>
       )}
