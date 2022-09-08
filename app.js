@@ -1,22 +1,36 @@
 /* global React, ReactDOM */
 
-const todos = [
-  'List of Todos',
-  'Toggling a todo between active/completed',
-  'A counter for active/completed todos',
-  'Deleting a todo',
-  'Adding a new todo',
-  'Form validation'
+const initialTodos = [
+  { label: 'List of Todos', completed: false },
+  { label: 'Toggling a todo between active/completed', completed: false },
+  { label: 'A counter for active/completed todos', completed: false },
+  { label: 'Deleting a todo', completed: false },
+  { label: 'Adding a new todo', completed: false },
+  { label: 'Form validation', completed: false },
 ];
 
 const TodoApp = () => {
+  const [todos, updateTodos] = React.useState(initialTodos)
+
+  const toggleTodoStatus = (updatedTodo, completed) => {
+    const updatedTodos = todos.map(t =>
+      t === updatedTodo ? { ...updatedTodo, completed } : t,
+    )
+    updateTodos(updatedTodos)
+  }
+
   return (
     <div>
       <h1>Todos List</h1>
       <ul>
         {todos.map(todo => (
-          <li key={todo}>
-            <h3>{todo}</h3>
+          <li key={todo.label}>
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={e => toggleTodoStatus(todo, e.target.checked)}
+            />
+            <h3 className={todo.completed ? 'completed' : ''}>{todo.label}</h3>
           </li>
         ))}
       </ul>
