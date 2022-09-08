@@ -19,15 +19,24 @@ const TodoApp = () => {
     updateTodos(updatedTodos)
   }
 
+  const deleteTodo = todo => {
+    const updatedTodos = todos.filter(t => t !== todo)
+    updateTodos(updatedTodos)
+  }
+
   return (
     <div>
-      <TodosList todos={todos} toggleTodoStatus={toggleTodoStatus} />
+      <TodosList
+        todos={todos}
+        toggleTodoStatus={toggleTodoStatus}
+        deleteTodo={deleteTodo}
+      />
       <Stats todos={todos} />
     </div>
   )
 }
 
-const TodosList = ({ todos, toggleTodoStatus }) => {
+const TodosList = ({ todos, toggleTodoStatus, deleteTodo }) => {
   return (
     <div>
       <h1>Todos List</h1>
@@ -40,6 +49,7 @@ const TodosList = ({ todos, toggleTodoStatus }) => {
               onChange={e => toggleTodoStatus(todo, e.target.checked)}
             />
             <h3 className={todo.completed ? 'completed' : ''}>{todo.label}</h3>
+            <button onClick={() => deleteTodo(todo)}>✗</button>
           </li>
         ))}
       </ul>
