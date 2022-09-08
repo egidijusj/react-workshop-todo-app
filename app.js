@@ -21,6 +21,15 @@ const TodoApp = () => {
 
   return (
     <div>
+      <TodosList todos={todos} toggleTodoStatus={toggleTodoStatus} />
+      <Stats todos={todos} />
+    </div>
+  )
+}
+
+const TodosList = ({ todos, toggleTodoStatus }) => {
+  return (
+    <div>
       <h1>Todos List</h1>
       <ul>
         {todos.map(todo => (
@@ -35,6 +44,15 @@ const TodoApp = () => {
         ))}
       </ul>
     </div>
+  )
+}
+
+const Stats = ({ todos }) => {
+  return (
+    <aside>
+      Completed: <strong>{todos.filter(t => t.completed).length}</strong>{' '}
+      Pending: <strong>{todos.filter(t => !t.completed).length}</strong>
+    </aside>
   )
 }
 
